@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.project.member.dao.IMemberDAO">
+
+
+	<!-- dao 내 추상메소드와 이름 id등이 일치해야함 -->
+	<insert id="insertMember"
+		parameterType="com.spring.project.member.dto.MemberDTO">
+			INSERT INTO mem(
+			 	 mem_name
+				,mem_id
+				,mem_pw
+				,mem_phone
+				,mem_email
+			)VALUES(
+				 #{memName}
+				,#{memId}
+				,#{memPw}
+				,#{memPhone}
+				,#{memEmail}
+			)
+
+
+	</insert>
+	
+	
+	<select id="loginMember" parameterType="com.spring.project.member.dto.MemberDTO" resultType="com.spring.project.member.dto.MemberDTO">
+		SELECT
+		 	  mem_name
+			, mem_id
+			, mem_pw
+			, mem_phone
+			, mem_email
+		FROM
+			mem
+		WHERE 1=1
+		  AND mem_id = #{memId}
+		  AND mem_pw = #{memPw}
+	</select>
+
+
+	<update id="updateMember" parameterType="com.spring.project.member.dto.MemberDTO" >
+		UPDATE mem
+		SET mem_id = #{memId}
+			<if test="memPw.isEmpty() == false">
+		   		, mem_pw = #{memPw}
+		    </if>
+		    , mem_name = #{memName}
+			, mem_phone = #{memPhone}
+			, mem_email = #{memEmail}
+		WHERE mem_id = #{memId}
+		
+	</update>
+	
+<select id="getMember" parameterType="String" resultType="com.spring.project.member.dto.MemberDTO">
+	SELECT 
+	      mem_name
+	    , mem_pw
+	    , mem_id
+	    , mem_phone
+	    , mem_email
+		FROM 
+			mem
+		WHERE 1=1
+		  AND mem_id = #{memId}
+</select>
+
+	
+
+</mapper>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<settings>
+		<!-- 오라클 테이블의 칼럼이 mem_id 이고 DTO의 필드변수명이 memId 일때 자동으로 매핑되게 하는 설정(카멜식) -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+
+</configuration>

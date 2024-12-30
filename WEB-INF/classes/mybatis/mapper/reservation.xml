@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.project.reservation.dao.IReservationDAO">
+
+	<select id="getReservationList" resultType="com.spring.project.reservation.dto.ReservationDTO">
+	SELECT 
+	     a.reservation_no
+	    ,a.reservation_title
+	    ,a.mem_id
+	    ,b.mem_name
+	    ,a.reservation_content
+	    ,TO_CHAR(a.reservation_date, 'MM.dd') AS reservation_date
+	    ,a.reserve_yn
+	FROM
+	     reservation a
+	    ,mem b
+	WHERE 1=1
+  	  AND a.mem_id = b.mem_id
+  	  AND a.del_yn = 'N'
+  	ORDER BY reservation_no DESC
+	
+	</select>
+	
+	
+	<insert id="writeReservation" parameterType="com.spring.project.reservation.dto.ReservationDTO">
+	INSERT INTO reservation(
+	      reservation_no
+   		 ,reservation_title
+    	 ,mem_id
+   	 	 ,reservation_content
+    	 ,reservation_date
+    	 ,del_yn
+    	 ,reserve_yn
+	)VALUES(
+    	  (SELECT COUNT(*)+1 FROM reservation)
+   		 ,#{reservationTitle}
+   	 	 ,#{memId}
+    	 ,#{reservationContent}
+    	 ,SYSDATE
+    	 ,'N'
+    	 ,'wait'
+)
+	</insert>
+	
+	<select id="getReservation" resultType="com.spring.project.reservation.dto.ReservationDTO" parameterType="int">
+	
+			SELECT 
+		    	a.reservation_no
+		  	   ,a.reservation_title
+		  	   ,a.mem_id
+		 	   ,b.mem_name
+		 	   ,a.reservation_content
+		 	   ,TO_CHAR(a.reservation_date, 'MM.dd') AS reservation_date
+			FROM
+		        reservation a
+		       ,mem b
+			WHERE 1=1
+			   AND a.mem_id = b.mem_id
+ 			   AND a.reservation_no = #{reservationNo}
+ 			   AND a.del_yn = 'N'
+
+	
+	</select>
+	
+	<update id="editReservation" parameterType="com.spring.project.reservation.dto.ReservationDTO">
+	
+			UPDATE
+			    reservation
+			SET
+			     reservation_title = #{reservationTitle}
+			    ,reservation_content = #{reservationContent}
+			WHERE 1=1
+			  AND reservation_no = #{reservationNo}
+	
+	</update>
+	
+	<update id="deleteReservation">
+	
+		UPDATE 
+		    reservation
+		SET
+		    del_yn = 'Y'
+		WHERE 1=1
+		  AND reservation_no = #{reservationNo}
+	
+	</update>
+	
+	<update id="yesReservation">
+	
+		UPDATE
+			reservation
+		SET
+			reserve_yn = 'Y'
+		WHERE 1=1
+		  AND reservation_no = #{reservationNO}
+	
+	</update>
+	
+	<update id="noReservation">
+	
+		UPDATE
+			reservation
+		SET
+			reserve_yn = 'N'
+		WHERE 1=1
+		  AND reservation_no = #{reservationNO}
+	
+	</update>
+
+
+
+
+
+
+
+
+</mapper>
